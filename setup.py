@@ -11,5 +11,6 @@ setup(
     packages=["stablediffusiond"],
     install_requires=[
         "pika",
+        "daemon",
     ]
 )

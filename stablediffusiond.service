@@ -1,0 +1,15 @@
+[Unit]
+Description = stablediffusiond
+After = network.target
+
+[Service]
+Type=simple
+ExecStart=bash stablediffusion_server
+User=joe
+Restart=on-failure # Restart when there are errors
+SyslogIdentifier=stablediffusiond.log
+RestartSec=5
+TimeoutStartSec=infinity
+
+[Install]
+WantedBy=multi-user.target

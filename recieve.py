@@ -8,6 +8,9 @@ from settings import SCRIPTS
 
 # import settings and set path for script imports
 from settings import GENERAL
+import daemon
+from daemon import pidfile
+
 SCRIPTS_ROOT = GENERAL["sd_scripts"]
 PYTHON_PATH = GENERAL["sd_python_path"]
 sys.path.append(os.path.dirname(os.path.dirname(SCRIPTS_ROOT)))

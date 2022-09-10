@@ -1,0 +1,1 @@
+/home/joe/miniconda3/envs/ldm/bin/python  /home/joe/Projects/ai/stablediffusion/stablediffusion/stable-diffusion/stablediffusiond/recieve.py

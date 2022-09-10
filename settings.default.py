@@ -1,5 +1,8 @@
 import random
 
+# COPY THIS FILE TO settings.py AND EDIT IT
+# ALL PATHS SHOULD BE ABSOLUTE
+
 SERVER = {
     "queue_system": {
         "name": "RabbitMQ",
