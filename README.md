@@ -32,6 +32,8 @@ Follow the instructions at [RabbitMQ](https://www.rabbitmq.com/download.html) to
 
 ![img.png](img.png)
 
+### Install Stable Diffusion and stablediffusiond
+
 The following instructions assume that you are on Linux and may need to be adapted for your platform
 
 1. `git clone --branch feature/add-classes https://github.com/w4ffl35/stable-diffusion.git`
