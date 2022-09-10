@@ -1,9 +1,0 @@
-txt2img:
-  arg:
-    prompt
-  type:
-    str
-  nargs:
-    ?
-  default:
-    None
