@@ -11,19 +11,3 @@ then
     python -m pip install pika --upgrade
 fi
 
-# Install stable diffusion
-read -p "Do you want to clone stable-diffusion? (y/n) " -n 1 -r
-echo
-if [[ $REPLY =~ ^[Yy]$ ]]
-then
-    git clone git@github.com:CompVis/stable-diffusion.git
-
-    # Install stable diffusion dependencies
-    read -p "Do you want to install stable diffusion dependencies? (y/n) " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]
-    then
-        cd stable-diffusion
-        conda env create -f environment.yaml
-    fi
-fi
