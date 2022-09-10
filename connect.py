@@ -1,9 +1,6 @@
 import pika
-import json
 from logger import info, error
-
-with open('stablediffusiond_settings.json') as f:
-    settings = json.load(f)
+from settings import SERVER
 
 
 def params():
@@ -11,12 +8,10 @@ def params():
     Gets the connection parameters from the settings file
     :return: queue, host, queue_system: the queue, host and queue system name from the settings file
     """
-    server_settings = settings["server"]
-    queue_system = server_settings["queue_system"]
-    queue_settings = settings["server"][queue_system]
+    queue_settings = SERVER["queue_system"]
     host = queue_settings["host"]
     queue = queue_settings["queue_name"]
-    return queue, host, queue_system
+    return queue, host, queue_settings["name"]
 
 
 def connect_queue():

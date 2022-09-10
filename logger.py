@@ -3,10 +3,6 @@ import json
 from datetime import datetime
 
 
-with open('stablediffusiond_settings.json') as f:
-    settings = json.load(f)
-
-
 def logging():
     obj = log.getLogger()
     log.basicConfig(level=log.INFO)

@@ -1,9 +1,0 @@
-{
-  "server": {
-    "queue_system": "rabbitmq",
-    "rabbitmq": {
-      "host": "localhost",
-      "queue_name": "stablediffusiond"
-    }
-  }
-}
