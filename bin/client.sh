@@ -1,1 +1,2 @@
-/home/joe/miniconda3/envs/ldm/bin/python  /home/joe/Projects/ai/stablediffusion/stablediffusion/stable-diffusion/stablediffusiond/send.py $@
+# escape the $@ to prevent shell expansion
+/home/joe/miniconda3/envs/ldm/bin/python  /home/joe/Projects/ai/stablediffusion/stablediffusion/stable-diffusion/stablediffusiond/send.py "$@" > /dev/null 2>&1 &
