@@ -9,14 +9,14 @@ SERVER = {
 }
 
 GENERAL = {
-    "sd_scripts": "/home/joe/Projects/ai/stablediffusion/stablediffusion/stable-diffusion/scripts",
-    "sd_python_path": "/home/joe/miniconda3/envs/ldm/bin/python",
+    "sd_scripts": "../scripts",
+    "sd_python_path": "~/miniconda3/envs/ldm/bin/python",
 }
 
 SCRIPTS = {
     'txt2img': [
         ('prompt', ''),
-        ('outdir', '/home/joe/.stablediffusion/txt2img'),
+        ('outdir', '~/.stablediffusion/txt2img'),
         ('skip_grid', ''),
         # ('skip_save', ''),
         ('ddim_steps', 50),
@@ -41,7 +41,7 @@ SCRIPTS = {
     'img2img': [
         ('prompt', ''),
         ('init-img', ''),
-        ('outdir', '/home/joe/.stablediffusion/img2img'),
+        ('outdir', '~/.stablediffusion/img2img'),
         ('skip_grid', True),
         ('skip_save', False),
         ('ddim_steps', 50),
@@ -62,13 +62,13 @@ SCRIPTS = {
         ('precision', 'autocast'),
     ],
     'inpaint': [
-        ('indir', '/home/joe/.stablediffusion/inpaint/input'),
-        ('outdir', '/home/joe/.stablediffusion/inpaint'),
+        ('indir', '~/.stablediffusion/inpaint/input'),
+        ('outdir', '~/.stablediffusion/inpaint'),
         ('steps', 50),
     ],
     'knn2img': [
         ('prompt', ''),
-        ('outdir', '/home/joe/.stablediffusion/knn2img'),
+        ('outdir', '~/.stablediffusion/knn2img'),
         ('skip_grid', True),
         ('ddim_steps', 50),
         ('n_repeat', 1),
