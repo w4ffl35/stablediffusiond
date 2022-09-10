@@ -10,7 +10,6 @@ setup(
     license="BSD-3-Clause",
     packages=["stablediffusiond"],
     install_requires=[
-        "pika",
-        "daemon",
+        "pika"
     ]
 )
