@@ -28,11 +28,21 @@ The following instructions assume that you are on Linux and may need to be adapt
 
 1. `git clone --branch feature/add-classes https://github.com/w4ffl35/stable-diffusion.git`
 2. `cd stable-diffusion`
-3. `git clone https://github.com/w4ffl35/stablediffusiond.git`
-4. Follow Stable Diffusion installation instructions [found in README](https://github.com/w4ffl35/stable-diffusion).
-5. ensure you have enabled the conda environment created in step 4, then install pika `pip install pika --upgrade`
-6. `cd stablediffusiond`
-7. `cp settings.default.py settings.py`, make any changes to the settings file that you wish
+3. Edit the `.git/info/exclude` file and add the following line to the end of the file: `stablediffusiond`
+4. `git clone https://github.com/w4ffl35/stablediffusiond.git`
+5. Follow Stable Diffusion installation instructions [found in README](https://github.com/w4ffl35/stable-diffusion).
+6. ensure you have enabled the conda environment created in step 4, then install pika `pip install pika --upgrade`
+7. `cd stablediffusiond`
+8. `cp settings.default.py settings.py`, make any changes to the settings file that you wish
+
+Your directory structure should look like this:
+
+```
+> stable-diffusion
+  > [various folders such as `assets`, `classes` and `scripts`]
+  > stablediffusiond
+    > [various files such as `recieve.py` and `send.py`]
+```
 
 ## Usage
 
