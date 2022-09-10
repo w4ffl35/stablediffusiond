@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="stablediffusiond",
-    version="0.2.1",
+    version="0.2.2",
     description="A simple daemon which listens for requests on a queue, runs stable diffusion scripts and enqueues the results.",
     url="https://github.com/w4ffl35/stablediffusiond.git",
     author="w4ffl35 (Joe Curlee)",
