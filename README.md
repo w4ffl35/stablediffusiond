@@ -5,7 +5,7 @@ A daemon which watches for messages on RabbitMQ and runs [Stable Diffusion](http
 - **No hot loading** - Model stored in RAM (4GB~) for faster processing
 - **Daemon** - existing solutions use a webserver, here we use a daemon which is more lightweight
 - **Less bloat** - code and dependencies have been kept to a minimum
-- **Flexability** - request daemon, response daemon and queue system can be run independently, allowing for more efficient use of resources
+- **Flexibility** - request daemon, response daemon and queue system can be run independently, allowing for more efficient use of resources
 - **Easy to use** - just run the daemon and send messages to the queue using `send.py`
 
 ## Flow chart
