@@ -4,10 +4,15 @@ import random
 # ALL PATHS SHOULD BE ABSOLUTE
 
 SERVER = {
-    "queue_system": {
+    "request_queue": {
         "name": "RabbitMQ",
         "host": "localhost",
         "queue_name": "stablediffusiond"
+    },
+    "response_queue": {
+        "name": "RabbitMQ",
+        "host": "localhost",
+        "queue_name": "results"
     }
 }
 
