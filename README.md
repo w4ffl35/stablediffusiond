@@ -2,7 +2,7 @@
 
 A daemon which watches for messages on RabbitMQ and runs [Stable Diffusion](https://github.com/CompVis/stable-diffusion)
 
-- **No hot loading** - Model stored in RAM (4GB~) for faster processing
+- **No hot loading** - Model stored in RAM (10GB~) for faster processing
 - **Daemon** - existing solutions use a webserver, here we use a daemon which is more lightweight
 - **Less bloat** - code and dependencies have been kept to a minimum
 - **Flexibility** - request daemon, response daemon and queue system can be run independently, allowing for more efficient use of resources
@@ -106,7 +106,7 @@ Starts a Stable Diffusion response queue runner
 ### bin commands
 
 - start stable diffusion queue runner (daemon uses this) `stablediffusion_client`
-- start the sable diffusion response runner (response damen uses this) `stablediffusion_response_query`
+- start the sable diffusion response runner (response daemon uses this) `stablediffusion_response_query`
 - send a message to running stable diffusion queue `stablediffusion_client '{"prompt": "cat", "seed": 42}'`
 
 ---
