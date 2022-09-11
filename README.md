@@ -2,16 +2,20 @@
 
 A daemon which watches for messages on RabbitMQ and runs [Stable Diffusion](https://github.com/CompVis/stable-diffusion)
 
-No need to initialize before each query and reduces bloat of other existing solutions.
+- **No hot loading** - Model stored in RAM (4GB~) for faster processing
+- **Daemon** - existing solutions use a webserver, here we use a daemon which is more lightweight
+- **Less bloat** - code and dependencies have been kept to a minimum
+- **Flexability** - request daemon, response daemon and queue system can be run independently, allowing for more efficient use of resources
+- **Easy to use** - just run the daemon and send messages to the queue using `send.py`
 
-## Usage
+## Flow chart
 
-1. `stablediffusiond` listens to a request server
-2. client makes a request which is added to queue
-3. `stablediffusiond` gets top response from queue and runs Stable Diffusion on it
-4. `stablediffusiond` places response from Stable Diffusion into response queue
-5. `stablediffusion_responsed` service listens to response queue and opens a socket on `localhost:50007`
-6. `stablediffusion_responsed` gets top response from queue and returns it to client connected on `localhost:50007`
+1. `stablediffusiond` listens to _request queue_
+2. client makes a request which is added to _request queue_
+3. `stablediffusiond` gets top item from _request queue_ and runs Stable Diffusion based on request
+4. `stablediffusiond` places response from Stable Diffusion into _response queue_
+5. `stablediffusion_responsed` service listens to _response queue_ and opens a socket on `localhost:50007`
+6. `stablediffusion_responsed` gets top item from _response queue_ and returns it to client connected on `localhost:50007`
 
 ![img.png](src/stablediffusiond_flowchart.png)
 
