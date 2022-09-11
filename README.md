@@ -13,7 +13,7 @@ No need to initialize before each query and reduces bloat of other existing solu
 5. `stablediffusion_responsed` service listens to response queue and opens a socket on `localhost:50007`
 6. `stablediffusion_responsed` gets top response from queue and returns it to client connected on `localhost:50007`
 
-![](stablediffusiond_flowchart.png)
+![img.png](src/stablediffusiond_flowchart.png)
 
 ---
 
