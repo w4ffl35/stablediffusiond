@@ -1,10 +1,10 @@
 [Unit]
-Description = stablediffusiond
+Description = stablediffusion_responsed
 After = network.target
 
 [Service]
 Type=simple
-ExecStart=bash stablediffusion_server
+ExecStart=bash stablediffusion_response_query
 User=[USER_HERE]
 Restart=on-failure # Restart when there are errors
 SyslogIdentifier=stablediffusiond.log

@@ -5,9 +5,9 @@ import json
 
 
 def send(data):
-    connection, channel = connect_queue()
-    publish_queue(channel, json.dumps(data))
-    disconnect_queue(connection)
+    connection, channel = connect_queue("request_queue")
+    publish_queue(channel, json.dumps(data), "request_queue")
+    disconnect_queue(connection, "request_queue")
 
 
 if __name__ == '__main__':
