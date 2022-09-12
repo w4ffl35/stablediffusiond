@@ -25,10 +25,27 @@ class ResponseHandler:
         self.host = "localhost"  # the host this service is running on
         self.port = 50007  # the port to listen on
         self.max_client_connections = 1  # the maximum number of clients to accept
-        threading.Thread(target=self.open_socket).start()
-        threading.Thread(target=self.connect_to_queue, args=("response_queue",)).start()
+        self.run()
+        #threading.Thread(target=self.connect_to_queue, args=("response_queue",)).start()
+        self.connect_to_queue("response_queue")
         # self.open_socket()
         # self.connect_to_queue("response_queue")
+
+    def run(self):
+        """
+        Starts a new thread with a client that has a connection to stablediffusion_responsed
+        :return: None
+        """
+        self.thread = threading.Thread(target=self.connect_server)
+        self.thread.start()
+
+    def connect_server(self):
+        """
+        Connect to stablediffusion_responsed socket and listen for responses.
+        :return: None
+        """
+        self.open_socket()
+        self.listen_for_connections()
 
     def open_socket(self):
         """
@@ -44,9 +61,16 @@ class ResponseHandler:
             log.error(str(err))
             return
         log.info(f"Socket opened {self.soc}")
-        self.soc.listen(self.max_client_connections)
-        self.soc_connection, self.soc_addr = self.soc.accept()
-        log.info(f"Connection established with {self.soc_addr}")
+
+    def listen_for_connections(self):
+        """
+        Listen for incoming connections.
+        Returns:
+        """
+        while True:
+            self.soc.listen(self.max_client_connections)
+            self.soc_connection, self.soc_addr = self.soc.accept()
+            log.info(f"Connection established with {self.soc_addr}")
 
     def connect_to_queue(self, queue_name):
         """
