@@ -1,3 +1,6 @@
+"""
+Runs txt2img and img2img scripts
+"""
 import os
 import logger
 from settings import SCRIPTS, GENERAL
@@ -8,12 +11,18 @@ PYTHON_PATH = GENERAL["sd_python_path"]
 
 # run python script from console
 def run_script(script_name, user_options):
+    """
+    Runs a python script from the console.
+    :param script_name: str
+    :param user_options: dict
+    :return: None
+    """
     # build list of all user options
     option_overrides = {}
     for option in user_options:
         option_overrides[option[0]] = option[1]
 
-    if SCRIPTS.__contains__(script_name):
+    if script_name in SCRIPTS:
         logger.info(f"Running script {script_name}...")
         # iterate over script arguments and build command line options
         options = ""

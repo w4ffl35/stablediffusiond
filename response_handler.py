@@ -1,5 +1,8 @@
 #!/usr/bin/env python
-import os
+"""
+A consumer which watches a queue and sends messages over a socket to a client.
+"""
+
 import sys
 import json
 import threading
@@ -14,6 +17,10 @@ class ResponseHandler:
     and sends results to appropriate clients that are connected to this service.
     """
 
+    soc = None
+    soc_connection = None
+    soc_addr = None
+
     def __init__(self):
         self.host = "localhost"  # the host this service is running on
         self.port = 50007  # the port to listen on
@@ -24,13 +31,17 @@ class ResponseHandler:
         # self.connect_to_queue("response_queue")
 
     def open_socket(self):
+        """
+        Open a socket to listen for incoming connections.
+        :return: None
+        """
         log.info(f"Connecting stablediffusiond to host {self.host} on port {self.port}")
         self.soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
             self.soc.bind((self.host, self.port))
-        except socket.error as e:
+        except socket.error as err:
             log.error(f"Failed to open a socket at {self.host}:{self.port}")
-            log.error(str(e))
+            log.error(str(err))
             return
         log.info(f"Socket opened {self.soc}")
         self.soc.listen(self.max_client_connections)
@@ -38,17 +49,26 @@ class ResponseHandler:
         log.info(f"Connection established with {self.soc_addr}")
 
     def connect_to_queue(self, queue_name):
+        """
+        Connect to a queue and start listening for messages.
+        :return: None
+        """
         try:
-            connection, channel = connect_queue(queue_name)
+            _connection, channel = connect_queue(queue_name)
             start_consumer(channel, self.queue_listener, queue_name)
         except KeyboardInterrupt:
             log.warning("Interrupted")
-            try:
-                sys.exit(0)
-            except SystemExit:
-                os._exit(0)
+            sys.exit(0)
 
-    def queue_listener(self, ch, method, properties, body):
+    def queue_listener(self, _channel, _method, _properties, body):
+        """
+        Handle messages from the queue.
+        :param _channel: channel
+        :param _method: method
+        :param _properties: properties
+        :param body: body
+        :return: None
+        """
         log.info(" [x] Received response")
         saved_files = json.loads(body)
 
@@ -57,5 +77,7 @@ class ResponseHandler:
 
         log.info("Completed")
 
+
 if __name__ == "__main__":
+    # Start the response handler.
     ResponseHandler()

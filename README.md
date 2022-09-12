@@ -21,11 +21,23 @@ A daemon which watches for messages on RabbitMQ and runs [Stable Diffusion](http
 
 ---
 
+## Requirements
+
+- RabbitMQ
+- Python 3.6+
+- conda (optional but recommended)
+- pika
+- Stable Diffusion and its dependencies
+- the Stable Diffusion Model
+
 ## Installation
 
 Run the installation script and follow the instructions
 
-`curl -s https://raw.githubusercontent.com/w4ffl35/stablediffusiond/master/install.sh | bash`
+1. `curl -s https://raw.githubusercontent.com/w4ffl35/stablediffusiond/master/install.sh | bash`
+2. Edit `settings.py` and fill it out with correct values for your environment.
+3. cp rc.stablediffusiond /etc/rc.stablediffusiond
+4. cp rc.stablediffusion_responsed /etc/rc.stablediffusion_responsed
 
 Your directory structure should look like this:
 
@@ -33,7 +45,7 @@ Your directory structure should look like this:
 > stable-diffusion
   > [various folders such as `assets`, `classes` and `scripts`]
   > stablediffusiond
-    > [various files such as `recieve.py` and `send.py`]
+    > [various files such as `receive.py` and `send.py`]
 ```
 
 ### Manual installation
