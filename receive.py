@@ -89,8 +89,13 @@ class Receiver:
         :return: string
         """
         try:
-            message = ''.join(chr(int(message[i * 8:i * 8 + 8], 2)) for i in range(len(message) // 8))
-        except Exception as exception:
+            # This is temporary. We will be switching to capnproto soon.
+            message = ''.join(
+                chr(
+                    int(message[i * 8:i * 8 + 8], 2)
+                ) for i in range(len(message) // 8)
+            )
+        except ValueError as exception:
             log.warning(f"Unable to decode binary string. Returning original string. {exception}")
         return message
 
