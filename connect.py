@@ -18,6 +18,7 @@ def params(queue_system):
     queue = queue_settings["queue_name"]
     return queue, host, queue_settings["name"]
 
+
 def connect_queue(queue_system):
     """
     Connects to the Queue. Starts a consumer if a callback is provided.
@@ -37,6 +38,7 @@ def connect_queue(queue_system):
     channel.queue_declare(queue=queue)
 
     return connection, channel
+
 
 def start_consumer(channel, callback, queue_system):
     """

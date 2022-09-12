@@ -57,5 +57,6 @@ class ResponseHandler:
 
         log.info("Completed")
 
+
 if __name__ == "__main__":
     ResponseHandler()
