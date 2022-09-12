@@ -20,7 +20,7 @@ A daemon which watches for messages on RabbitMQ and runs [Stable Diffusion](http
 - **Flexibility** - request daemon, response daemon and queue system can be run independently, allowing for more efficient use of resources
 - **Easy to use** - just run the daemon and send messages to the queue using `send.py`
 
-## Flow chart
+![img.png](src/stablediffusiond_flowchart.png)
 
 1. `stablediffusiond` listens to _request queue_
 2. client makes a request which is added to _request queue_
@@ -28,8 +28,6 @@ A daemon which watches for messages on RabbitMQ and runs [Stable Diffusion](http
 4. `stablediffusiond` places response from Stable Diffusion into _response queue_
 5. `stablediffusion_responsed` service listens to _response queue_ and opens a socket on `localhost:50007`
 6. `stablediffusion_responsed` gets top item from _response queue_ and returns it to client connected on `localhost:50007`
-
-![img.png](src/stablediffusiond_flowchart.png)
 
 ---
 
