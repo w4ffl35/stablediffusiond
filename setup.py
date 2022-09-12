@@ -5,7 +5,7 @@ from setuptools import setup
 
 setup(
     name="stablediffusiond",
-    version="0.4.0",
+    version="0.4.1",
     description="A daemon that watches a queue, runs stable diffusion and enqueues the results.",
     url="https://github.com/w4ffl35/stablediffusiond.git",
     author="w4ffl35 (Joe Curlee)",

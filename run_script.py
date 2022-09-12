@@ -3,10 +3,17 @@ Runs txt2img and img2img scripts
 """
 import os
 import logger
-from settings import SCRIPTS, GENERAL
 
-SCRIPTS_ROOT = GENERAL["sd_scripts"]
-PYTHON_PATH = GENERAL["sd_python_path"]
+try:
+    from settings import SCRIPTS, GENERAL
+
+    SCRIPTS_ROOT = GENERAL["sd_scripts"]
+    PYTHON_PATH = GENERAL["sd_python_path"]
+except ImportError:
+    print("Unable to import settings file. Please create a settings.py file.")
+    SCRIPTS = {}
+    SCRIPTS_ROOT = ""
+    PYTHON_PATH = ""
 
 
 # run python script from console

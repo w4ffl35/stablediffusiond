@@ -2,9 +2,17 @@
 Collection of functions to connect to the queue and publish messages.
 """
 
-import pika
+try:
+    import pika
+except ImportError:
+    print("Unable to import pika. Please install requirements.")
+    pika = None
+try:
+    from settings import SERVER
+except ImportError:
+    print("Unable to import settings file. Please create a settings.py file.")
+    SERVER = {}
 from logger import info, error
-from settings import SERVER
 
 
 def params(queue_system):
@@ -13,9 +21,13 @@ def params(queue_system):
     :param queue_system:
     :return: queue, host, queue_system: the queue, host and queue system name from the settings file
     """
-    queue_settings = SERVER[queue_system]
-    host = queue_settings["host"]
-    queue = queue_settings["queue_name"]
+    try:
+        queue_settings = SERVER[queue_system]
+        host = queue_settings["host"]
+        queue = queue_settings["queue_name"]
+    except KeyError:
+        error(f"Unable to find settings for {queue_system} in settings file")
+        return None, None, None
     return queue, host, queue_settings["name"]
 
 
@@ -31,11 +43,14 @@ def connect_queue(queue_system):
     # connect to queue
     info(f"Starting connection to {queue_system}")
     info(f"Connecting to {queue_system} host {host}...")
-    connection = pika.BlockingConnection(pika.ConnectionParameters(host))
-    channel = connection.channel()
-
-    info(f"Declaring {queue_system} queue {queue}...")
-    channel.queue_declare(queue=queue)
+    if pika:
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host))
+        channel = connection.channel()
+        info(f"Declaring {queue_system} queue {queue}...")
+        channel.queue_declare(queue=queue)
+    else:
+        error("Unable to connect to queue. Pika not installed.")
+        return None, None
 
     return connection, channel
 
