@@ -6,12 +6,22 @@ Starts a queue consumer that receives messages and runs stables diffusion.
 import sys
 import os
 import json
-from classes.txt2img import Txt2Img
-from classes.img2img import Img2Img
-import logger as log
-from connect import connect_queue, start_consumer, publish_queue, disconnect_queue
-from settings import SCRIPTS
+try:
+    from classes.txt2img import Txt2Img
+    from classes.img2img import Img2Img
+except ImportError:
+    print("Unable to import classes. Please install requirements.")
+    Txt2Img = None
+    Img2Img = None
 
+try:
+    from settings import SCRIPTS
+except ImportError:
+    print("Unable to import settings file. Please create a settings.py file.")
+    SCRIPTS = {}
+
+from connect import connect_queue, start_consumer, publish_queue, disconnect_queue
+import logger as log
 
 class Receiver:
     """
@@ -28,6 +38,9 @@ class Receiver:
         Loads the txt2img model
         :return: Txt2Img instance
         """
+        if not Txt2Img:
+            raise ImportError("Unable to import classes. Please install requirements.")
+
         if not self._txt2img_loader:
             self._txt2img_loader = Txt2Img(
                 options=SCRIPTS["txt2img"],
@@ -42,6 +55,9 @@ class Receiver:
         Loads the img2img model
         :return: Img2Img instance
         """
+        if not Img2Img:
+            raise ImportError("Unable to import classes. Please install requirements.")
+
         if not self._txt2img_loader:
             self._img2img_loader = Img2Img(
                 options=SCRIPTS["img2img"],
