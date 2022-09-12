@@ -2,8 +2,14 @@
 Collection of functions to connect to the queue and publish messages.
 """
 
-import pika
-from settings import SERVER
+try:
+    import pika
+except ImportError:
+    print("Unable to import pika. Please install requirements.")
+try:
+    from settings import SERVER
+except ImportError:
+    print("Unable to import settings file. Please create a settings.py file.")
 from logger import info, error
 
 
