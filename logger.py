@@ -2,7 +2,6 @@
 Wrapper functions for logging
 """
 import logging as log
-import json
 from datetime import datetime
 
 
