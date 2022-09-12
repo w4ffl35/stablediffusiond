@@ -42,7 +42,7 @@ Your directory structure should look like this:
 > stable-diffusion
   > [various folders such as `assets`, `classes` and `scripts`]
   > stablediffusiond
-    > [various files such as `recieve.py` and `send.py`]
+    > [various files such as `receive.py` and `send.py`]
 ```
 
 ### Manual installation

@@ -18,7 +18,7 @@ from classes.txt2img import Txt2Img
 from classes.img2img import Img2Img
 
 
-class Reciever:
+class Receiver:
     model = None
     device = None
     _txt2img_loader = None
@@ -96,4 +96,4 @@ class Reciever:
                 os._exit(0)
 
 if __name__ == "__main__":
-    Reciever()
+    Receiver()
