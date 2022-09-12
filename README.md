@@ -1,5 +1,17 @@
 # stablediffusiond
 
+[![Pylint](https://github.com/w4ffl35/stablediffusiond/actions/workflows/pylint.yml/badge.svg)](https://github.com/w4ffl35/stablediffusiond/actions/workflows/pylint.yml)
+![GitHub issues](https://img.shields.io/github/issues/w4ffl35/stablediffusiond)
+![GitHub](https://img.shields.io/github/license/w4ffl35/stablediffusiond)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/w4ffl35/stablediffusiond)
+![GitHub Release Date](https://img.shields.io/github/release-date/w4ffl35/stablediffusiond)
+
+![GitHub repo size](https://img.shields.io/github/repo-size/w4ffl35/stablediffusiond)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/w4ffl35/stablediffusiond)
+![Lines of code](https://img.shields.io/tokei/lines/github/w4ffl35/stablediffusiond)
+
+---
+
 A daemon which watches for messages on RabbitMQ and runs [Stable Diffusion](https://github.com/CompVis/stable-diffusion)
 
 - **Daemon** - existing solutions use a webserver, here we use a daemon which is more lightweight
