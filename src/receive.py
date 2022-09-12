@@ -23,6 +23,7 @@ except ImportError:
 from connect import connect_queue, start_consumer, publish_queue, disconnect_queue
 import logger as log
 
+
 class Receiver:
     """
     Loads stable diffusion model, watches a queue, runs the model and enqueues the results.
@@ -162,6 +163,7 @@ class Receiver:
                 sys.exit(0)
             except SystemExit:
                 os._exit(0)
+
 
 if __name__ == "__main__":
     Receiver()
