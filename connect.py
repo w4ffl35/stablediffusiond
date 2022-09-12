@@ -3,8 +3,8 @@ Collection of functions to connect to the queue and publish messages.
 """
 
 import pika
-from logger import info, error
 from settings import SERVER
+from logger import info, error
 
 
 def params(queue_system):
