@@ -1,1 +1,2 @@
-/home/joe/miniconda3/envs/ldm/bin/python  /home/joe/Projects/ai/stablediffusion/stablediffusion/stable-diffusion/stablediffusiond/recieve.py
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+/home/$USER/miniconda3/envs/ldm/bin/python  SCRIPT_DIR/../recieve.py

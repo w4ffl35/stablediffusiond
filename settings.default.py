@@ -48,7 +48,7 @@ SCRIPTS = {
     ],
     'img2img': [
         ('prompt', ''),
-        ('init-img', ''),
+        ('init_img', ''),
         ('outdir', '~/.stablediffusion/img2img'),
         ('skip_grid', True),
         ('skip_save', False),
