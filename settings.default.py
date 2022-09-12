@@ -1,7 +1,10 @@
-import random
+"""
+Default settings file.
+This must be copied to settings.py and edited.
 
-# COPY THIS FILE TO settings.py AND EDIT IT
-# ALL PATHS SHOULD BE ABSOLUTE
+All paths contained in this file must be changed to absolute paths.
+"""
+import random
 
 SERVER = {
     "request_queue": {

@@ -4,8 +4,9 @@ After = network.target
 
 [Service]
 Type=simple
-ExecStart=bash stablediffusion_response_query
+ExecStart=/home/[USER_HERE]/miniconda3/envs/ldm/bin/python [PATH_TO_STABLEDIFFUSIOND]/response_handler.py
 User=[USER_HERE]
+Environment="SDPATH=[PATH_TO_STABLEDIFFUSIOND]"
 Restart=on-failure # Restart when there are errors
 SyslogIdentifier=stablediffusiond.log
 RestartSec=5

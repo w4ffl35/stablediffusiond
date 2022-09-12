@@ -1,3 +1,7 @@
+"""
+Collection of functions to connect to the queue and publish messages.
+"""
+
 import pika
 from logger import info, error
 from settings import SERVER
@@ -14,9 +18,10 @@ def params(queue_system):
     queue = queue_settings["queue_name"]
     return queue, host, queue_settings["name"]
 
+
 def connect_queue(queue_system):
     """
-    Connects to the Queue and starts a consumer if a callback is provided, otherwise it just connects
+    Connects to the Queue. Starts a consumer if a callback is provided.
     :param queue_system:
     :return: connection, channel: the connection and channel objects for the queue
     """
@@ -33,6 +38,7 @@ def connect_queue(queue_system):
     channel.queue_declare(queue=queue)
 
     return connection, channel
+
 
 def start_consumer(channel, callback, queue_system):
     """
@@ -73,6 +79,6 @@ def disconnect_queue(connection, queue_system):
         error("Tried to close connection, but nothing to close")
         return
 
-    queue, _host, queue_system = params(queue_system)
+    _queue, _host, queue_system = params(queue_system)
     info(f"Closing {queue_system} connection...")
     connection.close()

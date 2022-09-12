@@ -1,16 +1,23 @@
 #!/usr/bin/env python
+"""
+Send a message to the queue. Called from bin/client.sh or can be called directly.
+"""
 import sys
 from connect import connect_queue, disconnect_queue, publish_queue
-import json
 
 
-def send(data):
+def send(message):
+    """
+    Send a message to the queue.
+    :param data: a dictionary with the data to send
+    :return: None
+    """
     connection, channel = connect_queue("request_queue")
-    publish_queue(channel, json.dumps(data), "request_queue")
+    publish_queue(channel, message, "request_queue")
     disconnect_queue(connection, "request_queue")
 
 
 if __name__ == '__main__':
     # get data json from command line argument
-    data = json.loads(sys.argv[1])
-    send(data)
+    print(sys.argv[1])
+    send(sys.argv[1])
