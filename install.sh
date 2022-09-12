@@ -163,9 +163,7 @@ echo
 # Add bin directory to .bashrc PATH
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-  sudo ln -s "$PWD/bin/server.sh" "/usr/local/bin/stablediffusion_server"
   sudo ln -s "$PWD/bin/client.sh" "/usr/local/bin/stablediffusion_client"
-  sudo ln -s "$PWD/bin/response.sh" "/usr/local/bin/stablediffusion_response_query"
 fi
 
 
@@ -179,11 +177,14 @@ echo
 
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-  # copy stablediffusiond.service to /etc/systemd/system
-  sudo cp stablediffusiond.service /etc/systemd/system
+  # copy etc/stablediffusiond.service to /etc/systemd/system
+  sudo cp etc/stablediffusiond.service /etc/systemd/system
 
   # change [USER_HERE] to current user
   sudo sed -i "s/\[USER_HERE\]/$(whoami)/g" /etc/systemd/system/stablediffusiond.service
+
+  # change PATH_TO_STABLEDIFFUSIOND to current path
+  sudo sed -i "s|PATH_TO_STABLEDIFFUSIOND|$PWD|g" /etc/systemd/system/stablediffusiond.service
 
   # enable stablediffusiond.service
   sudo systemctl enable stablediffusiond.service
@@ -206,11 +207,14 @@ echo
 
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-  # copy stablediffusion_responsed.service to /etc/systemd/system
-  sudo cp stablediffusion_responsed.service /etc/systemd/system
+  # copy etc/stablediffusion_responsed.service to /etc/systemd/system
+  sudo cp etc/stablediffusion_responsed.service /etc/systemd/system
 
   # change [USER_HERE] to current user
   sudo sed -i "s/\[USER_HERE\]/$(whoami)/g" /etc/systemd/system/stablediffusion_responsed.service
+
+  # change PATH_TO_STABLEDIFFUSIOND to current path
+  sudo sed -i "s|PATH_TO_STABLEDIFFUSIOND|$PWD|g" /etc/systemd/system/stablediffusiond.service
 
   # enable stablediffusion_responsed.service
   sudo systemctl enable stablediffusion_responsed.service
