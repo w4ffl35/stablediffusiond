@@ -1,3 +1,7 @@
+"""
+Collection of functions to connect to the queue and publish messages.
+"""
+
 import pika
 from logger import info, error
 from settings import SERVER
@@ -16,7 +20,7 @@ def params(queue_system):
 
 def connect_queue(queue_system):
     """
-    Connects to the Queue and starts a consumer if a callback is provided, otherwise it just connects
+    Connects to the Queue. Starts a consumer if a callback is provided.
     :param queue_system:
     :return: connection, channel: the connection and channel objects for the queue
     """
