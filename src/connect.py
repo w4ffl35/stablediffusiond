@@ -8,7 +8,7 @@ except ImportError:
     print("Unable to import pika. Please install requirements.")
     pika = None
 try:
-    from settings import SERVER
+    from stablediffusiond.settings import SERVER
 except ImportError:
     print("Unable to import settings file. Please create a settings.py file.")
     SERVER = {}

@@ -4,7 +4,7 @@ After = network.target
 
 [Service]
 Type=simple
-ExecStart=/home/[USER_HERE]/miniconda3/envs/ldm/bin/python [PATH_TO_STABLEDIFFUSIOND]/response_handler.py
+ExecStart=/home/[USER_HERE]/miniconda3/envs/ldm/bin/python [PATH_TO_STABLEDIFFUSIOND]/src/response_handler.py
 User=[USER_HERE]
 Environment="SDPATH=[PATH_TO_STABLEDIFFUSIOND]"
 Restart=on-failure # Restart when there are errors
