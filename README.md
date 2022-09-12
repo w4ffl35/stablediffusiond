@@ -21,6 +21,15 @@ A daemon which watches for messages on RabbitMQ and runs [Stable Diffusion](http
 
 ---
 
+## Requirements
+
+- RabbitMQ
+- Python 3.6+
+- conda (optional but recommended)
+- pika
+- Stable Diffusion and its dependencies
+- the Stable Diffusion Model
+
 ## Installation
 
 Run the installation script and follow the instructions
