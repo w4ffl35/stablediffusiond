@@ -15,7 +15,7 @@ except ImportError:
     Img2Img = None
 
 try:
-    from settings import SCRIPTS
+    from stablediffusiond.settings import SCRIPTS
 except ImportError:
     print("Unable to import settings file. Please create a settings.py file.")
     SCRIPTS = {}
