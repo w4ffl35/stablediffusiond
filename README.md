@@ -36,8 +36,6 @@ Run the installation script and follow the instructions
 
 1. `curl -s https://raw.githubusercontent.com/w4ffl35/stablediffusiond/master/install.sh | bash`
 2. Edit `settings.py` and fill it out with correct values for your environment.
-3. cp rc.stablediffusiond /etc/rc.stablediffusiond
-4. cp rc.stablediffusion_responsed /etc/rc.stablediffusion_responsed
 
 Your directory structure should look like this:
 
