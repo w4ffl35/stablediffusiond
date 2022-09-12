@@ -79,6 +79,6 @@ def disconnect_queue(connection, queue_system):
         error("Tried to close connection, but nothing to close")
         return
 
-    queue, _host, queue_system = params(queue_system)
+    _queue, _host, queue_system = params(queue_system)
     info(f"Closing {queue_system} connection...")
     connection.close()
