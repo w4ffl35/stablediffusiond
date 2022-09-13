@@ -23,6 +23,7 @@ except ImportError:
 from connect import connect_queue, start_consumer, publish_queue, disconnect_queue
 import logger as log
 
+
 class Receiver:
     """
     Loads stable diffusion model, watches a queue, runs the model and enqueues the results.
@@ -38,15 +39,6 @@ class Receiver:
         Loads the txt2img model
         :return: Txt2Img instance
         """
-        if not Txt2Img:
-            raise ImportError("Unable to import classes. Please install requirements.")
-
-        if not self._txt2img_loader:
-            self._txt2img_loader = Txt2Img(
-                options=SCRIPTS["txt2img"],
-                model=self.model,
-                device=self.device
-            )
         return self._txt2img_loader
 
     @property
@@ -55,16 +47,7 @@ class Receiver:
         Loads the img2img model
         :return: Img2Img instance
         """
-        if not Img2Img:
-            raise ImportError("Unable to import classes. Please install requirements.")
-
-        if not self._txt2img_loader:
-            self._img2img_loader = Img2Img(
-                options=SCRIPTS["img2img"],
-                model=self.model,
-                device=self.device
-            )
-        return self._txt2img_loader
+        return self._img2img_loader
 
     def process_data_value(self, key, value):
         """
@@ -82,7 +65,7 @@ class Receiver:
             "n_samples", "n_rows", "seed"
         ]:
             return int(value)
-        if key in ["ddim_eta", "scale"]:
+        if key in ["ddim_eta", "scale", "strength"]:
             return float(value)
         return value
 
@@ -132,14 +115,16 @@ class Receiver:
         log.info(" [x] Received request")
 
         log.info(" Running stable diffusion sample...")
-        options = SCRIPTS["txt2img"]
-
-        for key, value in data.items():
-            for index, opt in enumerate(options):
-                if opt[0] == key:
-                    options[index] = (opt[0], self.process_data_value(key, value))
-
         script_type = data.get("type", "txt2img")
+        options = SCRIPTS[script_type]
+
+        # get all keys from data
+        keys = data.keys()
+
+        for index, opt in enumerate(options):
+            if opt[0] in keys:
+                options[index] = (opt[0], self.process_data_value(opt[0], data.get(opt[0], opt[1])))
+
         if script_type == "txt2img":
             saved_files = self.txt2img_loader.sample(options=options)
         else:
@@ -153,6 +138,19 @@ class Receiver:
         """
         Constructor, starts a consumer on the queue.
         """
+
+        self._txt2img_loader = Txt2Img(
+            options=SCRIPTS["txt2img"],
+            model=self.model,
+            device=self.device
+        )
+
+        self._img2img_loader = Img2Img(
+            options=SCRIPTS["img2img"],
+            model=self._txt2img_loader.model,
+            device=self._txt2img_loader.device
+        )
+
         try:
             _connection, channel = connect_queue("request_queue")
             start_consumer(channel, self.callback, "request_queue")
@@ -162,6 +160,7 @@ class Receiver:
                 sys.exit(0)
             except SystemExit:
                 os._exit(0)
+
 
 if __name__ == "__main__":
     Receiver()
