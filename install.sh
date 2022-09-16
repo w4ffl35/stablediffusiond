@@ -163,7 +163,9 @@ echo
 # Add bin directory to .bashrc PATH
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-  sudo ln -s "$PWD/bin/client.sh" "/usr/local/bin/stablediffusion_client"
+  sudo ln -s "$PWD/bin/send.sh" "/usr/local/bin/send"
+  sudo ln -s "$PWD/bin/client.sh" "/usr/local/bin/stablediffusiond_client"
+  sudo ln -s "$PWD/bin/server.sh" "/usr/local/bin/stablediffuiond_server"
 fi
 
 

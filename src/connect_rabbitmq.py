@@ -7,11 +7,8 @@ try:
 except ImportError:
     print("Unable to import pika. Please install requirements.")
     pika = None
-try:
-    from stablediffusiond.settings import SERVER
-except ImportError:
-    print("Unable to import settings file. Please create a settings.py file.")
-    SERVER = {}
+
+from settings import SERVER
 from logger import info, error
 
 
@@ -65,9 +62,18 @@ def start_consumer(channel, callback, queue_system):
     """
     # get connection parameters
     queue, _host, queue_system = params(queue_system)
-    channel.basic_consume(queue=queue, auto_ack=True, on_message_callback=callback)
-    info(f' [*] {queue_system} Waiting for messages. To exit press CTRL+C')
-    channel.start_consuming()
+
+    """
+    RabbitMQ connection
+    """
+    if channel:
+        channel.basic_consume(
+            queue=queue,
+            auto_ack=True,
+            on_message_callback=callback
+        )
+        info(f' [*] {queue_system} Waiting for messages. To exit press CTRL+C')
+        channel.start_consuming()
 
 
 def publish_queue(channel, contents, queue_system):

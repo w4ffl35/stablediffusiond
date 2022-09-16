@@ -129,4 +129,8 @@ dmypy.json
 .pyre/
 
 # ignore settings.py file so that user can change it
-settings.py
+src/settings.py
+stablediffusion
+
+model.ckpt
+v1-inference.yaml

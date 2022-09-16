@@ -4,23 +4,23 @@ Starts a queue consumer that receives messages and runs stables diffusion.
 """
 
 import sys
-import os
+#import os
 import json
-try:
-    from classes.txt2img import Txt2Img
-    from classes.img2img import Img2Img
-except ImportError:
-    print("Unable to import classes. Please install requirements.")
-    Txt2Img = None
-    Img2Img = None
 
-try:
-    from stablediffusiond.settings import SCRIPTS
-except ImportError:
-    print("Unable to import settings file. Please create a settings.py file.")
-    SCRIPTS = {}
+# #sys.path.append("/home/joe/Projects/ai/stablediffusion/stablediffusion")
+#
+from stablediffusion.classes.txt2img import Txt2Img
+# #from stablediffusion.classes.img2img import Img2Img
 
-from connect import connect_queue, start_consumer, publish_queue, disconnect_queue
+# try:
+#     from classes.txt2img import Txt2Img
+#     from classes.img2img import Img2Img
+# except ImportError:
+#     print("Unable to import classes. Please install requirements.")
+#     Txt2Img = None
+#     Img2Img = None
+
+from settings import SCRIPTS, SERVER
 import logger as log
 
 
@@ -30,6 +30,7 @@ class Receiver:
     """
     model = None
     device = None
+    queue = None
     _txt2img_loader = None
     _img2img_loader = None
 
@@ -77,9 +78,9 @@ class Receiver:
         :return: None
         """
         log.info("Enqueuing results")
-        connection, channel = connect_queue("response_queue")
-        publish_queue(channel, json.dumps(saved_files), "response_queue")
-        disconnect_queue(connection, "response_queue")
+        connection, channel = self.connect.connect_queue("response_queue")
+        SERVER["request_queue"]["connect"].publish_queue(channel, json.dumps(saved_files), "response_queue")
+        SERVER["request_queue"]["connect"].disconnect_queue(connection, "response_queue")
 
     def decode_binary_string(self, message):
         """
@@ -134,33 +135,46 @@ class Receiver:
 
         log.info("Completed")
 
-    def __init__(self):
+    def connect_simple_queue(self):
+        log.info("Connecting to simple queue")
+        while True:
+            body = self.queue.get()
+            print(body)
+            self.callback(None, None, None, body)
+
+    def __init__(self, queue = None):
         """
         Constructor, starts a consumer on the queue.
         """
+        self.queue = queue
 
-        self._txt2img_loader = Txt2Img(
-            options=SCRIPTS["txt2img"],
-            model=self.model,
-            device=self.device
-        )
+        self.connect = SERVER["request_queue"]["connect"]
 
-        self._img2img_loader = Img2Img(
-            options=SCRIPTS["img2img"],
-            model=self._txt2img_loader.model,
-            device=self._txt2img_loader.device
-        )
+        # self._txt2img_loader = Txt2Img(
+        #     options=SCRIPTS["txt2img"],
+        #     model=self.model,
+        #     device=self.device
+        # )
+
+        # self._img2img_loader = Img2Img(
+        #     options=SCRIPTS["img2img"],
+        #     model=self._txt2img_loader.model,
+        #     device=self._txt2img_loader.device
+        # )
 
         try:
-            _connection, channel = connect_queue("request_queue")
-            start_consumer(channel, self.callback, "request_queue")
+            _connection, channel = self.connect.connect_queue("request_queue")
+            if channel:
+                self.connect.start_consumer(channel, self.callback, "request_queue")
+            elif self.connect.queue:
+                self.connect_simple_queue()
         except KeyboardInterrupt:
             print('Interrupted')
             try:
                 sys.exit(0)
             except SystemExit:
-                os._exit(0)
-
+                # os._exit(0)
+                pass
 
 if __name__ == "__main__":
     Receiver()
