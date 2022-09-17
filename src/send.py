@@ -12,6 +12,8 @@ def send(message):
     :param data: a dictionary with the data to send
     :return: None
     """
+    print("SEND")
+    print(message)
     connection, channel = connect_queue("request_queue")
     publish_queue(channel, message, "request_queue")
     disconnect_queue(connection, "request_queue")

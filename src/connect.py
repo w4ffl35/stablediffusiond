@@ -2,16 +2,8 @@
 Collection of functions to connect to the queue and publish messages.
 """
 
-try:
-    import pika
-except ImportError:
-    print("Unable to import pika. Please install requirements.")
-    pika = None
-try:
-    from stablediffusiond.settings import SERVER
-except ImportError:
-    print("Unable to import settings file. Please create a settings.py file.")
-    SERVER = {}
+import pika
+from settings import SERVER
 from logger import info, error
 
 
@@ -21,13 +13,10 @@ def params(queue_system):
     :param queue_system:
     :return: queue, host, queue_system: the queue, host and queue system name from the settings file
     """
-    try:
-        queue_settings = SERVER[queue_system]
-        host = queue_settings["host"]
-        queue = queue_settings["queue_name"]
-    except KeyError:
-        error(f"Unable to find settings for {queue_system} in settings file")
-        return None, None, None
+    print(SERVER)
+    queue_settings = SERVER[queue_system]
+    host = queue_settings["host"]
+    queue = queue_settings["queue_name"]
     return queue, host, queue_settings["name"]
 
 
@@ -37,6 +26,8 @@ def connect_queue(queue_system):
     :param queue_system:
     :return: connection, channel: the connection and channel objects for the queue
     """
+    print("CONNECT TO FUCKING QUEUE")
+    print(queue_system)
     # get connection parameters
     queue, host, queue_system = params(queue_system)
 
