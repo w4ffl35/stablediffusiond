@@ -1,1 +1,1 @@
-$PYTHONEXEC $SDDPATH/src/client.py "$@"
+$PYTHONEXEC $SDDPATH/src/send.py "$@"

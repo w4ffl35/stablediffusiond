@@ -134,3 +134,4 @@ stablediffusion
 
 model.ckpt
 v1-inference.yaml
+log

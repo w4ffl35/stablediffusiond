@@ -8,6 +8,7 @@ import json
 import threading
 import socket
 import logger as log
+import connect_rabbitmq as connect
 #from connect_rabbitmq import connect_queue, start_consumer
 from settings import SERVER
 
@@ -23,7 +24,7 @@ class ResponseHandler:
     queue = None
 
     def __init__(self, queue = None):
-        self.connect = SERVER["response_queue"]["connect"]
+        self.connect = connect
         self.host = "localhost"  # the host this service is running on
         self.port = 50007  # the port to listen on
         self.max_client_connections = 1  # the maximum number of clients to accept

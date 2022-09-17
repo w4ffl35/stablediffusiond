@@ -228,4 +228,16 @@ then
   sudo systemctl status stablediffusion_responsed.service
 fi
 
+echo
+read -p "Setup env variables? (y/n) " -n 1 -r
+echo
+
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+  mkdir  miniconda3/envs/kritastablediffusion/etc/conda/activate.d/
+  cp etc/env_vars.sh miniconda3/envs/kritastablediffusion/etc/conda/activate.d/env_vars.sh
+
+  echo "Be sure to deactivate and reactivate conda!"
+fi
+
 echo "Installation complete!"

@@ -2,26 +2,21 @@
 """
 Starts a queue consumer that receives messages and runs stables diffusion.
 """
-
 import sys
-#import os
+import os
 import json
+import logger as log
+import connect_rabbitmq as connect
+from settings import SCRIPTS, SERVER
 
-# #sys.path.append("/home/joe/Projects/ai/stablediffusion/stablediffusion")
-#
-from stablediffusion.classes.txt2img import Txt2Img
+# add to python include paths
+sys.path.append(os.environ['SDPATH'])
+sys.path.append(os.path.join(os.environ['SDPATH'], "src", "taming-transformers"))
+sys.path.append(os.environ['SDDPATH'])
+
+from classes.txt2img import Txt2Img
 # #from stablediffusion.classes.img2img import Img2Img
 
-# try:
-#     from classes.txt2img import Txt2Img
-#     from classes.img2img import Img2Img
-# except ImportError:
-#     print("Unable to import classes. Please install requirements.")
-#     Txt2Img = None
-#     Img2Img = None
-
-from settings import SCRIPTS, SERVER
-import logger as log
 
 
 class Receiver:
@@ -147,13 +142,13 @@ class Receiver:
         """
         self.queue = queue
 
-        self.connect = SERVER["request_queue"]["connect"]
+        self.connect = connect#SERVER["request_queue"]["connect"]
 
-        # self._txt2img_loader = Txt2Img(
-        #     options=SCRIPTS["txt2img"],
-        #     model=self.model,
-        #     device=self.device
-        # )
+        self._txt2img_loader = Txt2Img(
+            options=SCRIPTS["txt2img"],
+            model=self.model,
+            device=self.device
+        )
 
         # self._img2img_loader = Img2Img(
         #     options=SCRIPTS["img2img"],
