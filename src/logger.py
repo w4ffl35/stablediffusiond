@@ -31,7 +31,9 @@ def info(msg):
     :param msg: Message to be logged
     :return: None
     """
+    print("*" * 80)
     logging().info(format_message(msg))
+    print("*" * 80)
 
 
 def warning(msg):

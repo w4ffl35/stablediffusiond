@@ -1,4 +1,5 @@
 import json
+import time
 import queue as q
 import threading
 import socket
@@ -78,24 +79,22 @@ class Simple:
         self.outgoing_socket = None
         self.incoming_socket = None
         self.connected_to_client = False
-        # self._txt2img_loader = Txt2Img(
-        #     options=SCRIPTS["txt2img"],
-        #     model=self.model,
-        #     device=self.device
-        # )
-        self._img2img_loader = Img2Img(
-            options=SCRIPTS["img2img"],
-            model=None,
-            device=None
-            # model=self._txt2img_loader.model,
-            # device=self._txt2img_loader.device
-        )
         self.request_queue = q.Queue()
         self.response_queue = q.Queue()
         self.host = "localhost"  # the host this service is running on
         self.port = 50007  # the port to listen on
         self.max_client_connections = 1  # the maximum number of clients to accept
         self.run()
+        self._txt2img_loader = Txt2Img(
+            options=SCRIPTS["txt2img"],
+            model=self.model,
+            device=self.device
+        )
+        self._img2img_loader = Img2Img(
+            options=SCRIPTS["img2img"],
+            model=self._txt2img_loader.model,
+            device=self._txt2img_loader.device
+        )
 
     def run(self):
         """
@@ -105,29 +104,34 @@ class Simple:
         """
 
         # messages out to client
-        # self.open_incoming_socket()
-        # self.incoming_thread = threading.Thread(target=self.listen_for_connection_from_client)
-        # self.incoming_thread.start()
-        # threading.Thread(target=self.response_queue_worker).start()
+        self.open_incoming_socket()
+        threading.Thread(target=self.listen_for_connection_from_client, daemon=True).start()
+        threading.Thread(target=self.response_queue_worker, daemon=True).start()
 
         # messages in from client
         self.connect_outgoing_socket()
-        threading.Thread(target=self.receive_message_from_server).start()
-        threading.Thread(target=self.request_queue_worker).start()
+        threading.Thread(target=self.receive_message_from_server, daemon=True).start()
+        threading.Thread(target=self.request_queue_worker, daemon=True).start()
 
     def open_incoming_socket(self):
         """
         Open a socket to listen for incoming connections.
         :return: None
         """
+        print("ZXCVZXCVZXCVZMXCNBV,ZMXNCBVZ,MNXCBV,MZNXBCV,MZNBXCV")
         log.info(f"Opening a socket for incoming connections localhost on port 50006")
         self.incoming_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        try:
-            self.incoming_socket.bind(("localhost", 50006))
-        except socket.error as err:
-            log.error(f"Failed to open a socket at {self.host}:{self.port}")
-            log.error(str(err))
-            return
+        has_conn = False
+        while not has_conn:
+            try:
+                self.incoming_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+                self.incoming_socket.bind(("localhost", 50006))
+                has_conn = True
+            except socket.error as err:
+                msg = f"{time.strftime('%Y-%m-%d %H:%M:%S')} incoming socket failed to open on localhost:50006"
+                log.error(str(msg))
+                log.error(err)
+                time.sleep(1)
         log.info(f"Socket opened {self.incoming_socket}")
 
     def listen_for_connection_from_client(self):
@@ -139,17 +143,18 @@ class Simple:
             self.incoming_socket.listen(self.max_client_connections)
             self.incoming_connection, self.incoming_sock_address = self.incoming_socket.accept()
 
-            log.info(f"Connection established with {self.incoming_sock_address}")
+            log.info(f"simple_connect: listen_for_connection_from_client Connection established with localhost:50006")
 
     def connect_outgoing_socket(self):
+        log.info(f"simple_connect: connect_outgoing_socket: Connecting to server on port 50007")
         self.outgoing_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.outgoing_socket.connect(("localhost", 50007))
 
     def receive_message_from_server(self):
+        log.info("receive_message_from_server")
         while True:
             message = self.outgoing_socket.recv(1024)
             log.info("message received")
-            print(message)
             self.request_queue.put(message)
 
     def request_queue_worker(self):
@@ -157,15 +162,15 @@ class Simple:
             # run request worker
             item = self.request_queue.get()
             print("item acquired")
-            print(item)
             self.run_stable_diffusion(item)
 
     def response_queue_worker(self):
         while True:
             item = self.response_queue.get()
-            saved_files = json.loads(item)
+            # saved_files = json.loads(item)
+            saved_files = item
             print("saved files")
-            # self.incoming_connection.sendall(json.dumps(saved_files).encode("utf-8"))
+            self.incoming_connection.sendall(json.dumps(saved_files).encode("utf-8"))
 
     # def connect_client_socket(self):
     #     """
@@ -193,7 +198,6 @@ class Simple:
         # decode body from binary to string
         body = self.decode_binary_string(body)
         data = json.loads(body)
-        print(data)
 
         log.info(" [x] Received request")
 
@@ -208,10 +212,10 @@ class Simple:
             if opt[0] in keys:
                 options[index] = (opt[0], self.process_data_value(opt[0], data.get(opt[0], opt[1])))
 
-        # if script_type == "txt2img":
-        #     saved_files = self.txt2img_loader.sample(options=options)
-        # else:
-        saved_files = self.img2img_loader.sample(options=options)
+        if script_type == "txt2img":
+            saved_files = self.txt2img_loader.sample(options=options)
+        else:
+            saved_files = self.img2img_loader.sample(options=options)
 
         self.response_queue.put(saved_files)
 

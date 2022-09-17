@@ -139,7 +139,6 @@ class Receiver:
         log.info("Connecting to simple queue")
         while True:
             body = self.queue.get()
-            print(body)
             self.callback(None, None, None, body)
 
     def __init__(self, queue = None):
