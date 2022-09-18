@@ -26,8 +26,6 @@ def connect_queue(queue_system):
     :param queue_system:
     :return: connection, channel: the connection and channel objects for the queue
     """
-    print("CONNECT TO FUCKING QUEUE")
-    print(queue_system)
     # get connection parameters
     queue, host, queue_system = params(queue_system)
 
