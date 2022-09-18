@@ -130,3 +130,5 @@ dmypy.json
 
 # ignore settings.py file so that user can change it
 settings.py
+model.ckpt
+v1-inference.yaml
