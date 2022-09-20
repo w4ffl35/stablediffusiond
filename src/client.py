@@ -60,11 +60,11 @@ class ResponseHandler:
         log.info(f"Connecting stablediffusiond to host {self.host} on port {self.port}")
         self.soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
+            self.soc.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             self.soc.bind((self.host, self.port))
         except socket.error as err:
             log.error(f"Failed to open a socket at {self.host}:{self.port}")
             log.error(str(err))
-            return
         log.info(f"Socket opened {self.soc}")
 
     def listen_for_connections(self):

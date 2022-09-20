@@ -2,12 +2,7 @@
 Collection of functions to connect to the queue and publish messages.
 """
 
-try:
-    import pika
-except ImportError:
-    print("Unable to import pika. Please install requirements.")
-    pika = None
-
+import pika
 from settings import SERVER
 from logger import info, error
 
@@ -62,18 +57,9 @@ def start_consumer(channel, callback, queue_system):
     """
     # get connection parameters
     queue, _host, queue_system = params(queue_system)
-
-    """
-    RabbitMQ connection
-    """
-    if channel:
-        channel.basic_consume(
-            queue=queue,
-            auto_ack=True,
-            on_message_callback=callback
-        )
-        info(f' [*] {queue_system} Waiting for messages. To exit press CTRL+C')
-        channel.start_consuming()
+    channel.basic_consume(queue=queue, auto_ack=True, on_message_callback=callback)
+    info(f' [*] {queue_system} Waiting for messages. To exit press CTRL+C')
+    channel.start_consuming()
 
 
 def publish_queue(channel, contents, queue_system):

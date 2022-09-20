@@ -2,21 +2,18 @@
 """
 Starts a queue consumer that receives messages and runs stables diffusion.
 """
+
 import sys
 import os
 import json
+import connect_rabbitmq
 import logger as log
-import connect_rabbitmq as connect
-from settings import SCRIPTS, SERVER
-
+from settings import SCRIPTS
 # add to python include paths
 sys.path.append(os.environ['SDPATH'])
-sys.path.append(os.path.join(os.environ['SDPATH'], "src", "taming-transformers"))
-sys.path.append(os.environ['SDDPATH'])
-
+#sys.path.append(os.path.join(os.environ['SDPATH'], "src", "taming-transformers"))
 from classes.txt2img import Txt2Img
-# #from stablediffusion.classes.img2img import Img2Img
-
+from classes.img2img import Img2Img
 
 
 class Receiver:
@@ -74,8 +71,8 @@ class Receiver:
         """
         log.info("Enqueuing results")
         connection, channel = self.connect.connect_queue("response_queue")
-        SERVER["request_queue"]["connect"].publish_queue(channel, json.dumps(saved_files), "response_queue")
-        SERVER["request_queue"]["connect"].disconnect_queue(connection, "response_queue")
+        connect_rabbitmq.publish_queue(channel, json.dumps(saved_files), "response_queue")
+        connect_rabbitmq.disconnect_queue(connection, "response_queue")
 
     def decode_binary_string(self, message):
         """
@@ -142,7 +139,7 @@ class Receiver:
         """
         self.queue = queue
 
-        self.connect = connect#SERVER["request_queue"]["connect"]
+        self.connect = connect_rabbitmq
 
         self._txt2img_loader = Txt2Img(
             options=SCRIPTS["txt2img"],

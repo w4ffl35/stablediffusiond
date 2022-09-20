@@ -9,13 +9,13 @@ from datetime import datetime
 def logging():
     """
     Crates and returns a logger object
-    Returns: Logger object
+    Returns:
+
     """
     obj = log.getLogger()
     log.basicConfig(level=log.INFO)
-    sddpath = os.environ.get('SDDPATH')
-    print(f"{sddpath}/log/stablediffusiond.log")
-    log_file = log.FileHandler(f"{sddpath}/log/stablediffusiond.log")
+    path = os.path.dirname(os.path.realpath(__file__))
+    log_file = log.FileHandler(f"{path}/../log/stablediffusiond.log")
     log_file.setLevel(log.INFO)
     log_file.setFormatter(log.Formatter("%(asctime)s %(levelname)s %(message)s"))
     obj.addHandler(log_file)
@@ -37,9 +37,7 @@ def info(msg):
     :param msg: Message to be logged
     :return: None
     """
-    print("*" * 80)
     logging().info(format_message(msg))
-    print("*" * 80)
 
 
 def warning(msg):

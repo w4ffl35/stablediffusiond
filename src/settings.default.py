@@ -4,7 +4,11 @@ This must be copied to settings.py and edited.
 
 All paths contained in this file must be changed to absolute paths.
 """
+import os
 import random
+
+SDPATH = os.environ.get('SDPATH')
+HOME = os.environ.get('HOME')
 
 SERVER = {
     "request_queue": {
@@ -27,7 +31,7 @@ GENERAL = {
 SCRIPTS = {
     'txt2img': [
         ('prompt', ''),
-        ('outdir', '~/.stablediffusion/txt2img'),
+        ('outdir', f'{HOME}/.stablediffusion/txt2img'),
         ('skip_grid', ''),
         # ('skip_save', ''),
         ('ddim_steps', 50),
@@ -44,8 +48,8 @@ SCRIPTS = {
         ('n_rows', 0),
         ('scale', 7.5),
         # ('from-file', ''),
-        ('config', 'configs/stable-diffusion/v1-inference.yaml'),
-        ('ckpt', 'models/ldm/stable-diffusion-v1/model.ckpt'),
+        ('config', os.path.join(SDPATH, 'configs/stable-diffusion/v1-inference.yaml')),
+        ('ckpt', os.path.join(SDPATH, 'models/ldm/stable-diffusion-v1/model.ckpt')),
         ('seed', 42),
         ('precision', 'autocast'),
     ],
@@ -67,14 +71,14 @@ SCRIPTS = {
         ('scale', 5.0),
         ('strength', 0.75),
         ('from-file', ''),
-        ('config', 'configs/stable-diffusion/v1-inference.yaml'),
-        ('ckpt', 'models/ldm/stable-diffusion-v1/model.ckpt'),
+        ('config', os.path.join(SDPATH, 'configs/stable-diffusion/v1-inference.yaml')),
+        ('ckpt', os.path.join(SDPATH, 'models/ldm/stable-diffusion-v1/model.ckpt')),
         ('seed', random.randint(0, 100000)),
         ('precision', 'autocast'),
     ],
     'inpaint': [
-        ('indir', '~/.stablediffusion/inpaint/input'),
-        ('outdir', '~/.stablediffusion/inpaint'),
+        ('indir', f'{HOME}/.stablediffusion/inpaint/input'),
+        ('outdir', f'{HOME}/.stablediffusion/inpaint'),
         ('steps', 50),
     ],
     'knn2img': [
@@ -92,16 +96,16 @@ SCRIPTS = {
         ('n_rows', 0),
         ('scale', 5.0),
         ('from-file', ''),
-        ('config', 'configs/retrieval-augmented-diffusion/768x768.yaml'),
-        ('ckpt', 'models/rdm/rdm768x768/model.ckpt'),
+        ('config', 'stablediffusion/configs/retrieval-augmented-diffusion/768x768.yaml'),
+        ('ckpt', '../models/rdm/rdm768x768/model.ckpt'),
         ('clip_type', 'ViT-L/14'),
         ('database', 'artbench-surrealism'),
         ('use_neighbors', False),
         ('knn', 10),
     ],
     'train_searcher': [
-        ('d', 'data/rdm/retrieval_database/openimages'),
-        ('target_path', 'data/rdm/searchers/openimages'),
+        ('d', 'stablediffusion/data/rdm/retrieval_database/openimages'),
+        ('target_path', 'stablediffusion/data/rdm/searchers/openimages'),
         ('knn', 20),
     ],
 }
