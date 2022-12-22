@@ -1,6 +1,7 @@
 """
 Wrapper functions for logging
 """
+import os
 import logging as log
 from datetime import datetime
 
@@ -13,6 +14,11 @@ def logging():
     """
     obj = log.getLogger()
     log.basicConfig(level=log.INFO)
+    path = os.path.dirname(os.path.realpath(__file__))
+    log_file = log.FileHandler(f"{path}/../log/stablediffusiond.log")
+    log_file.setLevel(log.INFO)
+    log_file.setFormatter(log.Formatter("%(asctime)s %(levelname)s %(message)s"))
+    obj.addHandler(log_file)
     return obj
 
 

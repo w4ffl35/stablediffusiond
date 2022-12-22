@@ -8,8 +8,9 @@ import json
 import threading
 import socket
 import logger as log
-from connect import connect_queue, start_consumer
-
+import connect_rabbitmq as connect
+#from connect_rabbitmq import connect_queue, start_consumer
+from settings import SERVER
 
 class ResponseHandler:
     """
@@ -20,20 +21,24 @@ class ResponseHandler:
     soc = None
     soc_connection = None
     soc_addr = None
+    queue = None
 
-    def __init__(self):
+    def __init__(self, queue = None):
+        self.connect = connect
         self.host = "localhost"  # the host this service is running on
         self.port = 50007  # the port to listen on
         self.max_client_connections = 1  # the maximum number of clients to accept
         self.run()
-        #threading.Thread(target=self.connect_to_queue, args=("response_queue",)).start()
-        self.connect_to_queue("response_queue")
+        self.queue = queue
+        threading.Thread(target=self.connect_to_queue, args=("response_queue",)).start()
+        #self.connect_to_queue("response_queue")
         # self.open_socket()
         # self.connect_to_queue("response_queue")
 
     def run(self):
         """
-        Starts a new thread with a client that has a connection to stablediffusion_responsed
+        Starts a new thread with a server listening to conenctions from
+        a client via a socket.
         :return: None
         """
         self.thread = threading.Thread(target=self.connect_server)
@@ -55,11 +60,11 @@ class ResponseHandler:
         log.info(f"Connecting stablediffusiond to host {self.host} on port {self.port}")
         self.soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
+            self.soc.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             self.soc.bind((self.host, self.port))
         except socket.error as err:
             log.error(f"Failed to open a socket at {self.host}:{self.port}")
             log.error(str(err))
-            return
         log.info(f"Socket opened {self.soc}")
 
     def listen_for_connections(self):
@@ -70,7 +75,20 @@ class ResponseHandler:
         while True:
             self.soc.listen(self.max_client_connections)
             self.soc_connection, self.soc_addr = self.soc.accept()
+
             log.info(f"Connection established with {self.soc_addr}")
+
+    def listen_for_request(self):
+        check_stream = True
+        while check_stream:
+            data = None
+            try:
+                data = self.outgoing_soc.recv(1024)
+                print("got data")
+                self.queue.put(data)
+            except Exception as e:
+                print(e)
+                check_stream = False
 
     def connect_to_queue(self, queue_name):
         """
@@ -78,11 +96,21 @@ class ResponseHandler:
         :return: None
         """
         try:
-            _connection, channel = connect_queue(queue_name)
-            start_consumer(channel, self.queue_listener, queue_name)
+            _connection, channel = self.connect.connect_queue(queue_name)
+            if channel:
+                self.connect.start_consumer(channel, self.queue_listener, queue_name)
+            elif self.queue:
+                self.connect_simple_queue()
+
         except KeyboardInterrupt:
             log.warning("Interrupted")
             sys.exit(0)
+
+    def connect_simple_queue(self):
+        log.info("Connecting to simple queue")
+        while True:
+            item = self.queue.get()
+            self.queue_listener(None, None, None, item)
 
     def queue_listener(self, _channel, _method, _properties, body):
         """

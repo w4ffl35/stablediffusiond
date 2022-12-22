@@ -10,7 +10,7 @@
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/w4ffl35/stablediffusiond)
 ![Lines of code](https://img.shields.io/tokei/lines/github/w4ffl35/stablediffusiond)
 
----
+---3
 
 A daemon which watches for messages on RabbitMQ and runs [Stable Diffusion](https://github.com/CompVis/stable-diffusion)
 
@@ -101,3 +101,10 @@ Starts a Stable Diffusion response queue runner
 - Installation is too manual
 - Very basic RabbitMQ configuration
 - Not production ready
+
+---
+
+## Bundle instructions
+
+1. pip install -U pyinstaller
+2. pyinstaller __init__.py

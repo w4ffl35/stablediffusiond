@@ -2,16 +2,8 @@
 Collection of functions to connect to the queue and publish messages.
 """
 
-try:
-    import pika
-except ImportError:
-    print("Unable to import pika. Please install requirements.")
-    pika = None
-try:
-    from stablediffusiond.settings import SERVER
-except ImportError:
-    print("Unable to import settings file. Please create a settings.py file.")
-    SERVER = {}
+import pika
+from settings import SERVER
 from logger import info, error
 
 

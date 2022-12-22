@@ -3,8 +3,10 @@
 Send a message to the queue. Called from bin/client.sh or can be called directly.
 """
 import sys
-from connect import connect_queue, disconnect_queue, publish_queue
-
+import connect_rabbitmq
+import connect_simplequeue
+from settings import SERVER
+import logger as log
 
 def send(message):
     """
@@ -12,12 +14,21 @@ def send(message):
     :param data: a dictionary with the data to send
     :return: None
     """
-    connection, channel = connect_queue("request_queue")
-    publish_queue(channel, message, "request_queue")
-    disconnect_queue(connection, "request_queue")
+    queuename = SERVER["request_queue"]["name"]
+    connect = None
+    if queuename == "SimpleQueue":
+        connect = connect_rabbitmq
+    elif queuename:
+        connect = connect_simplequeue
+    if not connect:
+        log.error("Unable to find queue system in settings file")
+        return
+    connection, channel = connect.connect_queue("request_queue")
+    connect.publish_queue(channel, message, "request_queue")
+    connect.disconnect_queue(connection, "request_queue")
 
 
 if __name__ == '__main__':
     # get data json from command line argument
-    print(sys.argv[1])
+    log.info("Sending message to queue")
     send(sys.argv[1])

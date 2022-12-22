@@ -163,7 +163,9 @@ echo
 # Add bin directory to .bashrc PATH
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
-  sudo ln -s "$PWD/bin/client.sh" "/usr/local/bin/stablediffusion_client"
+  sudo ln -s "$PWD/bin/send.sh" "/usr/local/bin/send"
+  sudo ln -s "$PWD/bin/client.sh" "/usr/local/bin/stablediffusiond_client"
+  sudo ln -s "$PWD/bin/server.sh" "/usr/local/bin/stablediffuiond_server"
 fi
 
 
@@ -184,7 +186,7 @@ then
   sudo sed -i "s/\[USER_HERE\]/$(whoami)/g" /etc/systemd/system/stablediffusiond.service
 
   # change PATH_TO_STABLEDIFFUSIOND to current path
-  sudo sed -i "s|PATH_TO_STABLEDIFFUSIOND|$PWD|g" /etc/systemd/system/stablediffusiond.service
+  sudo sed -i "s|\[PATH_TO_STABLEDIFFUSIOND\]|$PWD|g" /etc/systemd/system/stablediffusiond.service
 
   # enable stablediffusiond.service
   sudo systemctl enable stablediffusiond.service
@@ -214,7 +216,7 @@ then
   sudo sed -i "s/\[USER_HERE\]/$(whoami)/g" /etc/systemd/system/stablediffusion_responsed.service
 
   # change PATH_TO_STABLEDIFFUSIOND to current path
-  sudo sed -i "s|PATH_TO_STABLEDIFFUSIOND|$PWD|g" /etc/systemd/system/stablediffusiond.service
+  sudo sed -i "s|\[PATH_TO_STABLEDIFFUSIOND\]|$PWD|g" /etc/systemd/system/stablediffusion_responsed.service
 
   # enable stablediffusion_responsed.service
   sudo systemctl enable stablediffusion_responsed.service
@@ -224,6 +226,18 @@ then
 
   # check status of stablediffusion_responsed.service
   sudo systemctl status stablediffusion_responsed.service
+fi
+
+echo
+read -p "Setup env variables? (y/n) " -n 1 -r
+echo
+
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+  mkdir  miniconda3/envs/kritastablediffusion/etc/conda/activate.d/
+  cp etc/env_vars.sh miniconda3/envs/kritastablediffusion/etc/conda/activate.d/env_vars.sh
+
+  echo "Be sure to deactivate and reactivate conda!"
 fi
 
 echo "Installation complete!"
