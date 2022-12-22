@@ -6,19 +6,14 @@ Starts a queue consumer that receives messages and runs stables diffusion.
 import sys
 import os
 import json
-try:
-    from classes.txt2img import Txt2Img
-    from classes.img2img import Img2Img
-except ImportError:
-    print("Unable to import classes. Please install requirements.")
-    Txt2Img = None
-    Img2Img = None
 
-try:
-    from stablediffusiond.settings import SCRIPTS
-except ImportError:
-    print("Unable to import settings file. Please create a settings.py file.")
-    SCRIPTS = {}
+from settings import SCRIPTS
+# add to python include paths
+sys.path.append(os.environ['SDPATH'])
+sys.path.append(os.path.join(os.environ['SDPATH'], "src", "taming-transformers"))
+from classes.txt2img import Txt2Img
+from classes.img2img import Img2Img
+
 
 from connect import connect_queue, start_consumer, publish_queue, disconnect_queue
 import logger as log

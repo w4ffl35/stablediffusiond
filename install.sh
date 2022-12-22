@@ -184,7 +184,7 @@ then
   sudo sed -i "s/\[USER_HERE\]/$(whoami)/g" /etc/systemd/system/stablediffusiond.service
 
   # change PATH_TO_STABLEDIFFUSIOND to current path
-  sudo sed -i "s|PATH_TO_STABLEDIFFUSIOND|$PWD|g" /etc/systemd/system/stablediffusiond.service
+  sudo sed -i "s|\[PATH_TO_STABLEDIFFUSIOND\]|$PWD|g" /etc/systemd/system/stablediffusiond.service
 
   # enable stablediffusiond.service
   sudo systemctl enable stablediffusiond.service
@@ -214,7 +214,7 @@ then
   sudo sed -i "s/\[USER_HERE\]/$(whoami)/g" /etc/systemd/system/stablediffusion_responsed.service
 
   # change PATH_TO_STABLEDIFFUSIOND to current path
-  sudo sed -i "s|PATH_TO_STABLEDIFFUSIOND|$PWD|g" /etc/systemd/system/stablediffusiond.service
+  sudo sed -i "s|\[PATH_TO_STABLEDIFFUSIOND\]|$PWD|g" /etc/systemd/system/stablediffusion_responsed.service
 
   # enable stablediffusion_responsed.service
   sudo systemctl enable stablediffusion_responsed.service
